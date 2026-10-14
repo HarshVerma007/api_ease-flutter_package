@@ -5,11 +5,7 @@
   Internet check, loading state, validation, retry, debounce and mounted checks, handled for you.
 </p>
 
-<p align="center">
-  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
-  <img alt="Dart 3" src="https://img.shields.io/badge/Dart-3.x-0175C2.svg">
-  <img alt="Platforms" src="https://img.shields.io/badge/platforms-Android%20%7C%20iOS%20%7C%20macOS%20%7C%20Windows%20%7C%20Linux-lightgrey.svg">
-</p>
+
 
 ---
 
@@ -60,13 +56,13 @@ Future<void> loadUsers() async {
 
 ```dart
 Future<void> loadUsers() => ApiEase.call<List<User>>(
-      request: () => dio.get('/users'),
-      context: context,
-      transformer: (r) => parseUsers(r.data),
-      onLoadingChanged: (loading) => setState(() => _isLoading = loading),
-      onSuccess: (users) => setState(() => _users = users),
-      onError: (e) => setState(() => _error = e.message),
-    );
+  request: () => dio.get('/users'),
+  context: context,
+  transformer: (r) => parseUsers(r.data),
+  onLoadingChanged: (loading) => setState(() => _isLoading = loading),
+  onSuccess: (users) => setState(() => _users = users),
+  onError: (e) => setState(() => _error = e.message),
+);
 ```
 
 ## Features
@@ -100,10 +96,10 @@ import 'package:api_ease/api_ease.dart';
 
 ```dart
 await ApiEase.call<String>(
-  request: () async => (await http.get(Uri.parse('https://example.com/hello'))).body,
-  context: context,
-  onSuccess: (text) => debugPrint(text),
-  onError: (e) => debugPrint(e.message),
+request: () async => (await http.get(Uri.parse('https://example.com/hello'))).body,
+context: context,
+onSuccess: (text) => debugPrint(text),
+onError: (e) => debugPrint(e.message),
 );
 ```
 
@@ -124,13 +120,13 @@ If there is no internet, the request is never sent. `ApiEase.call` shows the no-
 
 ```dart
 await ApiEase.call<List<User>>(
-  request: () => api.getUsers(),
-  context: context,                          // mounted guard, dialog, overlay
-  transformer: parseUsers,
-  onLoadingChanged: (loading) => setState(() => _loading = loading),
-  onSuccess: (users) => setState(() => _users = users),
-  onError: (error) => showSnack(error.message),
-  onNoInternet: () => showSnack('You are offline'), // optional, replaces the dialog
+request: () => api.getUsers(),
+context: context,                          // mounted guard, dialog, overlay
+transformer: parseUsers,
+onLoadingChanged: (loading) => setState(() => _loading = loading),
+onSuccess: (users) => setState(() => _users = users),
+onError: (error) => showSnack(error.message),
+onNoInternet: () => showSnack('You are offline'), // optional, replaces the dialog
 );
 ```
 
@@ -138,14 +134,14 @@ await ApiEase.call<List<User>>(
 
 ```dart
 final result = await ApiEase.run<List<User>>(
-  request: () => api.getUsers(),
-  transformer: parseUsers,
+request: () => api.getUsers(),
+transformer: parseUsers,
 );
 
 switch (result) {
-  case ApiSuccess(:final data):  showUsers(data);
-  case ApiError(:final error):   showError(error.message, error.statusCode);
-  case ApiNoInternet():          showOffline();
+case ApiSuccess(:final data):  showUsers(data);
+case ApiError(:final error):   showError(error.message, error.statusCode);
+case ApiNoInternet():          showOffline();
 }
 ```
 
@@ -155,14 +151,14 @@ switch (result) {
 
 ```dart
 ApiCall<List<User>>(
-  request: () => api.getUsers(),
-  transformer: parseUsers,
-  emptyWhen: (users) => users.isEmpty,
-  loadingBuilder: (context) => const Center(child: CircularProgressIndicator()),
-  successBuilder: (context, users) => UserList(users),
-  emptyBuilder: (context) => const Text('No users yet'),
-  errorBuilder: (context, error, retry) => ErrorView(error.message, onRetry: retry),
-  offlineBuilder: (context, retry) => OfflineView(onRetry: retry),
+request: () => api.getUsers(),
+transformer: parseUsers,
+emptyWhen: (users) => users.isEmpty,
+loadingBuilder: (context) => const Center(child: CircularProgressIndicator()),
+successBuilder: (context, users) => UserList(users),
+emptyBuilder: (context) => const Text('No users yet'),
+errorBuilder: (context, error, retry) => ErrorView(error.message, onRetry: retry),
+offlineBuilder: (context, retry) => OfflineView(onRetry: retry),
 )
 ```
 
@@ -170,14 +166,14 @@ Prefer one callback? Use `builder` with exhaustive pattern matching:
 
 ```dart
 ApiCall<List<User>>(
-  request: () => api.getUsers(),
-  builder: (context, state) => switch (state) {
-    ApiLoading<List<User>>()                       => const CircularProgressIndicator(),
-    ApiLoaded<List<User>>(:final data)             => UserList(data),
-    ApiEmpty<List<User>>()                         => const Text('No users yet'),
-    ApiErrorState<List<User>>(:final error, :final retry) => ErrorView(error.message, retry),
-    ApiOffline<List<User>>(:final retry)           => OfflineView(retry),
-  },
+request: () => api.getUsers(),
+builder: (context, state) => switch (state) {
+ApiLoading<List<User>>()                       => const CircularProgressIndicator(),
+ApiLoaded<List<User>>(:final data)             => UserList(data),
+ApiEmpty<List<User>>()                         => const Text('No users yet'),
+ApiErrorState<List<User>>(:final error, :final retry) => ErrorView(error.message, retry),
+ApiOffline<List<User>>(:final retry)           => OfflineView(retry),
+},
 )
 ```
 
@@ -232,15 +228,15 @@ Most options can be overridden per call: `responseValidator`, `errorMessageExtra
 
 ```dart
 ApiEaseConfig(
-  noInternetDialog: NoInternetDialogConfig(
-    builder: (context, onRetry) => AlertDialog(
-      title: const Text('You are offline'),
-      actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Close')),
-        FilledButton(onPressed: onRetry, child: const Text('Try again')),
-      ],
-    ),
-  ),
+noInternetDialog: NoInternetDialogConfig(
+builder: (context, onRetry) => AlertDialog(
+title: const Text('You are offline'),
+actions: [
+TextButton(onPressed: () => Navigator.pop(context), child: const Text('Close')),
+FilledButton(onPressed: onRetry, child: const Text('Try again')),
+],
+),
+),
 )
 ```
 
@@ -250,14 +246,14 @@ ApiEaseConfig(
 
 ```dart
 await ApiEase.call<Data>(
-  request: () => api.getData(),
-  retry: RetryConfig(
-    maxAttempts: 3,                                   // 1 try + 3 retries
-    backoff: BackoffStrategy.exponential,             // 500 ms, 1 s, 2 s ...
-    initialDelay: const Duration(milliseconds: 500),
-    retryWhen: (error, attempt) => isTransient(error),
-  ),
-  onSuccess: (data) => /* ... */,
+request: () => api.getData(),
+retry: RetryConfig(
+maxAttempts: 3,                                   // 1 try + 3 retries
+backoff: BackoffStrategy.exponential,             // 500 ms, 1 s, 2 s ...
+initialDelay: const Duration(milliseconds: 500),
+retryWhen: (error, attempt) => isTransient(error),
+),
+onSuccess: (data) => /* ... */,
 );
 ```
 
@@ -283,10 +279,10 @@ While a request with the same key is running, and for `DebounceConfig.window` af
 
 ```dart
 await ApiEase.call<List<User>>(
-  request: () => dio.get<Map<String, dynamic>>('/users'),
-  responseValidator: (r) => (r as Response).statusCode == 200,
-  transformer: (r) => parseUsers((r as Response).data),
-  onSuccess: (users) => /* ... */,
+request: () => dio.get<Map<String, dynamic>>('/users'),
+responseValidator: (r) => (r as Response).statusCode == 200,
+transformer: (r) => parseUsers((r as Response).data),
+onSuccess: (users) => /* ... */,
 );
 ```
 
@@ -296,11 +292,11 @@ A `DioException` is converted to `ApiErrorInfo` automatically, including its mes
 
 ```dart
 await ApiEase.call<List<User>>(
-  request: () => http.get(Uri.parse('https://example.com/users')),
-  responseValidator: (r) => (r as http.Response).statusCode == 200,
-  errorMessageExtractor: (r) => 'HTTP ${(r as http.Response).statusCode}',
-  transformer: (r) => parseUsers(jsonDecode((r as http.Response).body)),
-  onSuccess: (users) => /* ... */,
+request: () => http.get(Uri.parse('https://example.com/users')),
+responseValidator: (r) => (r as http.Response).statusCode == 200,
+errorMessageExtractor: (r) => 'HTTP ${(r as http.Response).statusCode}',
+transformer: (r) => parseUsers(jsonDecode((r as http.Response).body)),
+onSuccess: (users) => /* ... */,
 );
 ```
 

@@ -1,9 +1,9 @@
 name: api_ease
 description: Eliminate API call boilerplate in Flutter. Auto internet check, loading states, response validation, retry, debounce — in one line. Works with any HTTP client.
 version: 1.0.0
-homepage: https://github.com/user/api_ease
-repository: https://github.com/user/api_ease
-issue_tracker: https://github.com/user/api_ease/issues
+homepage: https://github.com/HarshVerma007/api_ease
+repository: https://github.com/HarshVerma007/api_ease
+issue_tracker: https://github.com/HarshVerma007/api_ease/issues
 topics:
   - api
   - networking
