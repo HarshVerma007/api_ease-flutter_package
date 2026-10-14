@@ -19,4 +19,4 @@ Initial release.
 
 ### Platforms
 
-- Android, iOS, macOS, Windows and Linux. Web is not supported.
+- Android, iOS, macOS, Windows and Linux. Web is not supported...
