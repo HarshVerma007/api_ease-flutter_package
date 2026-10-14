@@ -5,7 +5,10 @@
   Internet check, loading state, validation, retry, debounce and mounted checks, handled for you.
 </p>
 
-
+<p align="center">
+  <a href="https://pub.dev/packages/api_ease"><img src="https://img.shields.io/pub/v/api_ease.svg" alt="Pub Package" /></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT" /></a>
+</p>
 
 ---
 
